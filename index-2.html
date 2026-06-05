@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Debate Over Drinks</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #12142A;
+    --navy:     #1A1D3B;
+    --ink:      #FFFFFF;
+    --yellow:   #FFE600;
+    --pink:     #FF2D87;
+    --teal:     #00D4C8;
+    --purple:   #7B2FFF;
+    --orange:   #FF6B1A;
+    --muted:    #8A90C0;
+    --border:   rgba(255,230,0,0.15);
+    --card-bg:  #1E2240;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 3rem;
+    border-bottom: 2px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(18,20,42,0.95);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--yellow);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    text-shadow: 0 0 20px rgba(255,230,0,0.4);
+  }
+  .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+  .nav-links a {
+    font-size: 0.875rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--yellow); }
+  .nav-cta {
+    background: var(--pink) !important;
+    color: #fff !important;
+    padding: 0.6rem 1.4rem;
+    border-radius: 4px;
+    font-size: 0.8rem !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase;
+    transition: background 0.2s !important;
+    font-weight: 700 !important;
+  }
+  .nav-cta:hover { background: var(--purple) !important; color: #fff !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 90vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-left {
+    padding: 5rem 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 2px solid var(--border);
+    background: linear-gradient(135deg, #12142A 60%, #1A1040 100%);
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 2px;
+    background: var(--teal);
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: var(--yellow);
+    margin-bottom: 2rem;
+    text-shadow: 3px 3px 0 rgba(255,45,135,0.3);
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--pink);
+    text-shadow: 2px 2px 0 rgba(255,230,0,0.2), 0 0 30px rgba(255,45,135,0.5);
+  }
+  .hero-desc {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--muted);
+    max-width: 400px;
+    margin-bottom: 3rem;
+    font-weight: 300;
+  }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-dark {
+    background: var(--pink);
+    color: #fff;
+    padding: 1rem 2rem;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 4px;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+  .btn-dark:hover { background: var(--purple); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(255,45,135,0.5); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--teal);
+    padding: 1rem 2rem;
+    border: 2px solid var(--teal);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { background: var(--teal); color: #12142A; }
+
+  .hero-right {
+    background: linear-gradient(135deg, #1A1040 0%, #0D1A2E 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-right::before {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(123,47,255,0.25) 0%, rgba(255,45,135,0.1) 50%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .next-event-card {
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,230,0,0.25);
+    border-radius: 8px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 360px;
+    position: relative;
+    z-index: 1;
+  }
+  .event-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .event-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--yellow);
+    line-height: 1.2;
+    margin-bottom: 2rem;
+  }
+  .event-details { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem; }
+  .event-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.6);
+  }
+  .event-detail-icon {
+    width: 28px; height: 28px;
+    border: 1px solid rgba(255,230,0,0.2);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+  }
+  .event-spots {
+    border-top: 1px solid rgba(255,230,0,0.15);
+    padding-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .spots-num { font-size: 2rem; font-weight: 700; color: var(--yellow); font-family: 'Playfair Display', serif; text-shadow: 0 0 20px rgba(255,230,0,0.5); }
+  .spots-label { font-size: 0.75rem; color: rgba(255,255,255,0.4); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 2px; }
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0; margin-top: 2rem; width: 100%; max-width: 360px;
+    border: 2px solid rgba(255,230,0,0.2);
+    border-radius: 8px; overflow: hidden;
+  }
+  .hero-stat {
+    padding: 1.25rem; text-align: center;
+    border-right: 1px solid rgba(255,230,0,0.1);
+  }
+  .hero-stat:last-child { border-right: none; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 700; color: var(--yellow); }
+  .stat-lbl { font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+
+  /* POLLS */
+  .polls-section { padding: 6rem 3rem; border-bottom: 2px solid var(--border); background: var(--bg); }
+  .section-header { display: flex; align-items: baseline; gap: 2rem; margin-bottom: 3.5rem; }
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--teal);
+    letter-spacing: 0.1em;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3vw, 2.75rem);
+    font-weight: 700;
+    color: var(--yellow);
+    letter-spacing: -0.03em;
+  }
+  .poll-wrapper { max-width: 640px; }
+  .poll-question {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+  .poll-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 2rem; }
+  .poll-options { display: flex; flex-direction: column; gap: 0.75rem; }
+  .poll-option {
+    position: relative;
+    cursor: pointer;
+    border: 2px solid rgba(255,230,0,0.15);
+    background: var(--card-bg);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .poll-option:hover { border-color: var(--pink); transform: translateX(4px); }
+  .poll-option.voted-for { border-color: var(--teal); }
+  .poll-bar {
+    position: absolute; left: 0; top: 0; height: 100%;
+    background: rgba(255,45,135,0.2);
+    transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+    z-index: 0;
+  }
+  .poll-option-inner {
+    position: relative; z-index: 1;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 1.25rem;
+  }
+  .poll-opt-label { font-size: 0.9rem; font-weight: 500; color: var(--ink); }
+  .poll-opt-pct {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem; color: var(--yellow); font-weight: 700;
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .poll-opt-pct.visible { opacity: 1; }
+  .poll-footer {
+    margin-top: 1rem; font-size: 0.8rem; color: var(--muted);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .poll-footer::before { content: ''; display: inline-block; width: 16px; height: 2px; background: var(--teal); }
+
+  /* TICKETS */
+  .tickets-section { padding: 6rem 3rem; background: var(--navy); }
+  .tickets-section .section-title { color: var(--yellow); }
+  .tickets-section .section-num { color: var(--teal); }
+  .ticket-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 16px; margin-top: 3.5rem;
+  }
+  .ticket {
+    background: var(--card-bg);
+    border: 2px solid rgba(255,230,0,0.1);
+    border-radius: 8px;
+    padding: 2.5rem;
+    display: flex; flex-direction: column;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .ticket:hover { border-color: rgba(255,230,0,0.3); transform: translateY(-4px); }
+  .ticket.featured {
+    background: var(--pink);
+    border-color: var(--pink);
+  }
+  .ticket.featured:hover { background: #e01870; transform: translateY(-4px); }
+  .ticket-tier {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 1.5rem;
+  }
+  .ticket.featured .ticket-tier { color: rgba(255,255,255,0.7); }
+  .ticket-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem; font-weight: 900;
+    color: var(--yellow); line-height: 1; margin-bottom: 0.25rem;
+  }
+  .ticket.featured .ticket-price { color: #fff; }
+  .ticket-price-note { font-size: 0.75rem; color: var(--muted); margin-bottom: 2rem; }
+  .ticket.featured .ticket-price-note { color: rgba(255,255,255,0.6); }
+  .ticket-perks { list-style: none; flex: 1; margin-bottom: 2rem; }
+  .ticket-perks li {
+    font-size: 0.85rem; color: rgba(255,255,255,0.7);
+    padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .ticket.featured .ticket-perks li { color: rgba(255,255,255,0.9); border-bottom-color: rgba(255,255,255,0.2); }
+  .ticket-perks li::before { content: '✦'; color: var(--yellow); font-size: 0.6rem; flex-shrink: 0; }
+  .ticket.featured .ticket-perks li::before { color: rgba(255,255,255,0.6); }
+  .ticket-btn-area { margin-top: auto; }
+  .ticket-buy {
+    width: 100%; padding: 0.9rem;
+    background: rgba(255,230,0,0.1); color: var(--yellow);
+    border: 2px solid rgba(255,230,0,0.3);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    cursor: pointer; border-radius: 4px; transition: all 0.2s;
+  }
+  .ticket-buy:hover { background: var(--yellow); color: #12142A; border-color: var(--yellow); }
+  .ticket.featured .ticket-buy { background: rgba(255,255,255,0.2); color: #fff; border-color: rgba(255,255,255,0.3); }
+  .ticket.featured .ticket-buy:hover { background: #fff; color: var(--pink); }
+  .ticket-badge {
+    display: inline-block; background: var(--yellow); color: #12142A;
+    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 99px; margin-bottom: 1.5rem; font-weight: 700;
+  }
+  .ticket.featured .ticket-badge { background: rgba(255,255,255,0.25); color: #fff; }
+
+  /* PAST DEBATES */
+  .past-section { padding: 6rem 3rem; border-bottom: 2px solid var(--border); background: var(--bg); }
+  .debates-list {
+    display: flex; flex-direction: column; gap: 0;
+    border: 2px solid rgba(255,230,0,0.15); border-radius: 8px; overflow: hidden; margin-top: 3.5rem;
+  }
+  .debate-row {
+    display: grid; grid-template-columns: 80px 1fr auto auto;
+    align-items: center; gap: 2rem; padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(255,230,0,0.08);
+    transition: background 0.2s; cursor: default;
+    background: var(--card-bg);
+  }
+  .debate-row:last-child { border-bottom: none; }
+  .debate-row:hover { background: rgba(255,45,135,0.08); }
+  .debate-date { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); letter-spacing: 0.05em; }
+  .debate-topic { font-size: 0.95rem; font-weight: 500; color: var(--ink); }
+  .debate-winner { font-size: 0.75rem; color: var(--muted); text-align: right; }
+  .debate-winner strong { color: var(--pink); display: block; font-size: 0.8rem; }
+  .debate-attendance { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--muted); text-align: right; white-space: nowrap; }
+
+  /* EMAIL SIGNUP */
+  .signup-section {
+    padding: 5rem 3rem; display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: center; border-bottom: 2px solid var(--border);
+    background: linear-gradient(135deg, #1A1040 0%, #12142A 100%);
+  }
+  .signup-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+    font-weight: 700; letter-spacing: -0.03em;
+    color: var(--yellow); margin-bottom: 1rem;
+  }
+  .signup-text p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+  .signup-form { display: flex; flex-direction: column; gap: 0.75rem; }
+  .input-row { display: flex; gap: 0; }
+  .signup-input {
+    flex: 1; padding: 0.9rem 1.25rem;
+    border: 2px solid rgba(255,230,0,0.2); border-right: none;
+    background: var(--card-bg);
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    color: var(--ink); outline: none;
+    border-radius: 4px 0 0 4px; transition: border-color 0.2s;
+  }
+  .signup-input:focus { border-color: var(--pink); }
+  .signup-input::placeholder { color: var(--muted); }
+  .signup-submit {
+    padding: 0.9rem 1.5rem; background: var(--pink); color: #fff;
+    border: 2px solid var(--pink);
+    font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+    border-radius: 0 4px 4px 0; transition: background 0.2s; white-space: nowrap;
+  }
+  .signup-submit:hover { background: var(--purple); border-color: var(--purple); }
+  .signup-note { font-size: 0.75rem; color: var(--muted); }
+
+  /* FOOTER */
+  footer {
+    padding: 2.5rem 3rem; display: flex;
+    justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+    background: var(--navy); border-top: 2px solid rgba(255,230,0,0.1);
+  }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 900; color: var(--yellow); }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--pink); }
+  .footer-copy { font-size: 0.75rem; color: var(--muted); }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(12,14,30,0.85); backdrop-filter: blur(6px);
+    z-index: 500; display: flex; align-items: center; justify-content: center;
+    padding: 2rem; opacity: 0; pointer-events: none; transition: opacity 0.25s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--navy); border: 2px solid rgba(255,230,0,0.2);
+    border-radius: 8px; padding: 2.5rem; max-width: 480px; width: 100%;
+    position: relative; transform: translateY(16px); transition: transform 0.25s;
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal-close {
+    position: absolute; top: 1.25rem; right: 1.25rem;
+    background: none; border: none; cursor: pointer;
+    font-size: 1.25rem; color: var(--muted); line-height: 1; padding: 0.25rem;
+  }
+  .modal h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--yellow); }
+  .modal-tier { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; color: var(--teal); text-transform: uppercase; margin-bottom: 1.5rem; }
+  .modal-form { display: flex; flex-direction: column; gap: 1rem; }
+  .field label { display: block; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; }
+  .field input, .field select {
+    width: 100%; padding: 0.75rem 1rem;
+    border: 2px solid rgba(255,230,0,0.15); background: var(--card-bg);
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--ink);
+    outline: none; border-radius: 4px; transition: border-color 0.2s;
+  }
+  .field input:focus, .field select:focus { border-color: var(--pink); }
+  .modal-total {
+    padding: 1rem; background: rgba(255,45,135,0.1); border-radius: 4px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.85rem; color: var(--muted);
+  }
+  .modal-total strong { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--yellow); }
+  .modal-pay {
+    width: 100%; padding: 1rem; background: var(--pink); color: #fff; border: none;
+    font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+    border-radius: 4px; transition: background 0.2s;
+  }
+  .modal-pay:hover { background: var(--purple); }
+  .modal-secure { font-size: 0.72rem; color: var(--muted); text-align: center; margin-top: 0.5rem; }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 2rem; right: 2rem;
+    background: var(--navy); border: 2px solid var(--yellow);
+    color: var(--ink); padding: 1rem 1.5rem; border-radius: 8px;
+    font-size: 0.85rem; z-index: 600;
+    transform: translateY(80px); opacity: 0; transition: all 0.3s; max-width: 320px;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast-title { font-weight: 700; margin-bottom: 2px; color: var(--yellow); }
+  .toast-sub { font-size: 0.75rem; color: var(--muted); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .hero-left > * { animation: fadeUp 0.6s ease both; }
+  .hero-left > *:nth-child(1) { animation-delay: 0.05s; }
+  .hero-left > *:nth-child(2) { animation-delay: 0.15s; }
+  .hero-left > *:nth-child(3) { animation-delay: 0.25s; }
+  .hero-left > *:nth-child(4) { animation-delay: 0.35s; }
+  .next-event-card { animation: fadeUp 0.6s ease 0.3s both; }
+  .hero-stats { animation: fadeUp 0.6s ease 0.45s both; }
+
+  /* TOPIC IDEAS */
+  .ideas-section { padding: 6rem 3rem; border-bottom: 2px solid var(--border); background: var(--navy); }
+  .ideas-section .section-title { color: var(--yellow); }
+  .ideas-section .section-num { color: var(--teal); }
+  .ideas-sub { font-size: 0.95rem; color: var(--muted); margin-top: -2rem; margin-bottom: 2.5rem; max-width: 560px; }
+  .ideas-input-row { display: flex; gap: 0; max-width: 620px; }
+  .idea-input {
+    flex: 1; padding: 1rem 1.25rem;
+    border: 2px solid rgba(255,230,0,0.2); border-right: none;
+    background: var(--card-bg); font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; color: var(--ink); outline: none;
+    border-radius: 6px 0 0 6px; transition: border-color 0.2s;
+  }
+  .idea-input:focus { border-color: var(--pink); }
+  .idea-input::placeholder { color: var(--muted); }
+  .idea-submit {
+    padding: 1rem 1.75rem; background: var(--pink); color: #fff;
+    border: 2px solid var(--pink); font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; cursor: pointer;
+    border-radius: 0 6px 6px 0; transition: background 0.2s; white-space: nowrap;
+  }
+  .idea-submit:hover { background: var(--purple); border-color: var(--purple); }
+  .ideas-char-count { font-size: 0.72rem; color: var(--muted); margin-top: 0.5rem; margin-bottom: 2rem; }
+  .ideas-list { display: flex; flex-direction: column; gap: 10px; max-width: 620px; margin-top: 1rem; }
+  .idea-card {
+    background: var(--card-bg); border: 2px solid rgba(255,230,0,0.1);
+    border-radius: 6px; padding: 1rem 1.25rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    animation: fadeUp 0.35s ease both;
+    transition: border-color 0.2s;
+  }
+  .idea-card:hover { border-color: rgba(255,230,0,0.25); }
+  .idea-text { font-size: 0.9rem; color: var(--ink); flex: 1; line-height: 1.4; }
+  .idea-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .idea-upvote {
+    display: flex; align-items: center; gap: 5px;
+    background: rgba(255,230,0,0.08); border: 1px solid rgba(255,230,0,0.2);
+    color: var(--yellow); font-size: 0.78rem; font-weight: 700;
+    padding: 5px 12px; border-radius: 99px; cursor: pointer;
+    transition: background 0.2s, transform 0.15s; font-family: 'DM Mono', monospace;
+  }
+  .idea-upvote:hover { background: rgba(255,230,0,0.18); transform: scale(1.05); }
+  .idea-upvote.upvoted { background: var(--yellow); color: #12142A; border-color: var(--yellow); }
+  .idea-new-badge {
+    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; background: var(--teal); color: #12142A;
+    padding: 2px 8px; border-radius: 99px;
+  }
+  .ideas-empty { font-size: 0.9rem; color: var(--muted); font-style: italic; padding: 1rem 0; }
+
+  /* RESPONSIVE IDEAS */
+  @media (max-width: 900px) {
+    .ideas-section { padding: 4rem 1.5rem; }
+    .ideas-input-row { flex-direction: column; }
+    .idea-input { border-right: 2px solid rgba(255,230,0,0.2); border-radius: 6px; }
+    .idea-submit { border-radius: 6px; }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1.25rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 3rem 1.5rem; border-right: none; border-bottom: 2px solid var(--border); }
+    .hero-right { padding: 3rem 1.5rem; min-height: 400px; }
+    .polls-section, .past-section, .signup-section, .tickets-section { padding: 4rem 1.5rem; }
+    .ticket-grid { grid-template-columns: 1fr; }
+    .signup-section { grid-template-columns: 1fr; gap: 2rem; }
+    .debate-row { grid-template-columns: 1fr auto; }
+    .debate-date, .debate-attendance { display: none; }
+    footer { flex-direction: column; align-items: flex-start; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Debate Over Drinks</a>
+  <div class="nav-links">
+    <a href="#polls">Vote</a>
+    <a href="#tickets">Tickets</a>
+    <a href="#past">Past Debates</a>
+    <a href="#ideas">Suggest a Topic</a>
+    <a href="#signup" class="nav-cta">Get Notified</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Est. 2024 · Monthly Series</div>
+    <h1>Great <em>arguments</em><br>need great<br>drinks.</h1>
+    <p class="hero-desc">A monthly debate night where strangers become sparring partners and you can talk in your own language. Pick a side, make your case, and let the crowd decide who's right — with a drink in hand.</p>
+    <div class="hero-btns">
+      <a href="#tickets" class="btn-dark">Grab a ticket</a>
+      <a href="#polls" class="btn-ghost">Vote on the topic</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="next-event-card">
+      <div class="event-tag">Next Event</div>
+      <div class="event-title">"Which CM developed the state more — Andhra or Telangana?"</div>
+      <div class="event-details">
+        <div class="event-detail">
+          <div class="event-detail-icon">📅</div>
+          Date: Soon
+        </div>
+        <div class="event-detail">
+          <div class="event-detail-icon">⏰</div>
+          Doors 7 PM · Debate 8 PM
+        </div>
+        <div class="event-detail">
+          <div class="event-detail-icon">📍</div>
+          Location updating soon
+        </div>
+      </div>
+      <div class="event-spots">
+        <div>
+          <div class="spots-num" id="hero-spots">40</div>
+          <div class="spots-label">seats left</div>
+        </div>
+        <a href="#tickets" class="btn-dark" style="font-size:0.75rem;padding:0.75rem 1.25rem;">Reserve now →</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="stat-num">18</div>
+        <div class="stat-lbl">Events</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-num">940+</div>
+        <div class="stat-lbl">Attendees</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-num">4.9★</div>
+        <div class="stat-lbl">Rating</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POLL -->
+<section class="polls-section" id="polls">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Cast your vote</h2>
+  </div>
+  <div class="poll-wrapper">
+    <div class="poll-question">🗳️ Pick your debate — which topic fires you up most?</div>
+    <div class="poll-sub">Vote now — the most popular topic gets debated at the next event.</div>
+    <div class="poll-options" id="poll-options"></div>
+    <div class="poll-footer" id="poll-footer">107 votes so far</div>
+  </div>
+</section>
+
+<!-- TICKETS -->
+<section class="tickets-section" id="tickets">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Choose your seat</h2>
+  </div>
+  <div class="ticket-grid">
+    <div class="ticket">
+      <div class="ticket-tier">Standard</div>
+      <div class="ticket-price">$15</div>
+      <div class="ticket-price-note">per person</div>
+      <ul class="ticket-perks">
+        <li>General admission entry</li>
+        <li>One audience vote</li>
+        <li>Drink specials all night</li>
+        <li>Live scoreboard access</li>
+      </ul>
+      <div class="ticket-btn-area">
+        <button class="ticket-buy" onclick="openModal('Standard', 15)">Buy ticket</button>
+      </div>
+    </div>
+    <div class="ticket featured">
+      <div class="ticket-badge">🔥 Most popular</div>
+      <div class="ticket-tier">Debater</div>
+      <div class="ticket-price">$25</div>
+      <div class="ticket-price-note">per person</div>
+      <ul class="ticket-perks">
+        <li>Get on stage — make your case</li>
+        <li>3× audience voting power</li>
+        <li>First drink on us</li>
+        <li>Priority seating up front</li>
+        <li>Name on the scoreboard</li>
+      </ul>
+      <div class="ticket-btn-area">
+        <button class="ticket-buy" onclick="openModal('Debater', 25)">Buy ticket</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAST DEBATES -->
+<section class="past-section" id="past">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Battle history</h2>
+  </div>
+  <div class="debates-list">
+    <div class="debate-row">
+      <div class="debate-date">Jun '25</div>
+      <div class="debate-topic">Are TFI fans obsessed with "mass elevations"?</div>
+      <div class="debate-winner"><strong>Team Yes</strong>won 67%</div>
+      <div class="debate-attendance">84 attended</div>
+    </div>
+    <div class="debate-row">
+      <div class="debate-date">May '25</div>
+      <div class="debate-topic">Are influencers the new celebrities?</div>
+      <div class="debate-winner"><strong>Team Yes</strong>won 71%</div>
+      <div class="debate-attendance">91 attended</div>
+    </div>
+    <div class="debate-row">
+      <div class="debate-date">Apr '25</div>
+      <div class="debate-topic">Did dating apps make relationships disposable?</div>
+      <div class="debate-winner"><strong>Team Yes</strong>won 58%</div>
+      <div class="debate-attendance">76 attended</div>
+    </div>
+    <div class="debate-row">
+      <div class="debate-date">Mar '25</div>
+      <div class="debate-topic">Is community judgment worse abroad than in India?</div>
+      <div class="debate-winner"><strong>Team Abroad</strong>won 54%</div>
+      <div class="debate-attendance">88 attended</div>
+    </div>
+  </div>
+</section>
+
+<!-- TOPIC IDEAS -->
+<section class="ideas-section" id="ideas">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2 class="section-title">What should we debate next?</h2>
+  </div>
+  <p class="ideas-sub">Drop your idea below — the crowd votes, the best one makes it to the stage. 🎤</p>
+
+  <div class="ideas-input-row">
+    <input type="text" id="idea-input" class="idea-input" placeholder="e.g. Is Hyderabad biryani overrated?" maxlength="120">
+    <button class="idea-submit" onclick="submitIdea()">Submit idea</button>
+  </div>
+  <div class="ideas-char-count" id="char-count">0 / 120</div>
+
+  <div class="ideas-list" id="ideas-list"></div>
+</section>
+
+
+<section class="signup-section" id="signup">
+  <div class="signup-text">
+    <h2>Never miss a debate.</h2>
+    <p>Get the next topic, date, and a first-dibs ticket link straight to your inbox. No spam — just the good stuff, once a month.</p>
+  </div>
+  <div>
+    <div class="signup-form">
+      <div class="input-row">
+        <input type="email" class="signup-input" placeholder="your@email.com" id="email-input">
+        <button class="signup-submit" onclick="handleSignup()">Notify me</button>
+      </div>
+      <div class="signup-note">Join 340 people already on the list.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Debate Over Drinks</div>
+  <div class="footer-links">
+    <a href="#">Instagram</a>
+    <a href="#">Contact</a>
+    <a href="#">FAQ</a>
+  </div>
+  <div class="footer-copy">© 2025 Debate Over Drinks</div>
+</footer>
+
+<!-- TICKET MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-tier" id="modal-tier">Standard Ticket</div>
+    <h2 id="modal-title">Reserve your spot</h2>
+    <div class="modal-form">
+      <div class="field">
+        <label>Full name</label>
+        <input type="text" placeholder="Your name">
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" placeholder="you@email.com">
+      </div>
+      <div class="field">
+        <label>Quantity</label>
+        <select id="modal-qty" onchange="updateTotal()">
+          <option value="1">1 ticket</option>
+          <option value="2">2 tickets</option>
+          <option value="3">3 tickets</option>
+          <option value="4">4 tickets</option>
+        </select>
+      </div>
+      <div class="modal-total">
+        <span>Total due today</span>
+        <strong id="modal-total">$15</strong>
+      </div>
+      <button class="modal-pay" onclick="handlePurchase()">Complete purchase →</button>
+      <div class="modal-secure">🔒 Secure checkout · Instant confirmation by email</div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-title" id="toast-title">You're in!</div>
+  <div class="toast-sub" id="toast-sub">Check your email for confirmation.</div>
+</div>
+
+<script>
+  // Poll
+  const pollData = [
+    { label: "Which IPL team is the most overrated?", votes: 41 },
+    { label: "Is pan-India success ruining original Telugu storytelling?", votes: 37 },
+    { label: "Are Telugu people obsessed with 'what will people say'?", votes: 29 },
+    { label: "Which generation had it hardest — Gen Z vs Millennials?", votes: 33 }
+  ];
+  let voted = false;
+
+  function renderPoll() {
+    const total = pollData.reduce((s, o) => s + o.votes, 0);
+    const container = document.getElementById('poll-options');
+    container.innerHTML = '';
+    pollData.forEach((o, i) => {
+      const pct = Math.round((o.votes / total) * 100);
+      const div = document.createElement('div');
+      div.className = 'poll-option' + (voted && i === window.votedIdx ? ' voted-for' : '');
+      div.innerHTML = `
+        <div class="poll-bar" style="width:${voted ? pct : 0}%;"></div>
+        <div class="poll-option-inner">
+          <span class="poll-opt-label">${o.label}</span>
+          <span class="poll-opt-pct ${voted ? 'visible' : ''}">${pct}%</span>
+        </div>`;
+      if (!voted) div.onclick = () => castVote(i);
+      container.appendChild(div);
+    });
+    document.getElementById('poll-footer').textContent = total + ' votes cast';
+  }
+
+  function castVote(i) {
+    if (voted) return;
+    pollData[i].votes++;
+    voted = true;
+    window.votedIdx = i;
+    renderPoll();
+    showToast('Vote counted!', 'See you at the debate. 🥂');
+  }
+
+  renderPoll();
+
+  // Modal
+  let modalPrice = 15;
+
+  function openModal(tier, price) {
+    modalPrice = price;
+    document.getElementById('modal-tier').textContent = tier + ' Ticket';
+    document.getElementById('modal-title').textContent = tier === 'VIP Table' ? 'Reserve your table' : 'Reserve your spot';
+    document.getElementById('modal-qty').value = '1';
+    updateTotal();
+    document.getElementById('modal').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+  }
+
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('modal')) closeModal();
+  }
+
+  function updateTotal() {
+    const qty = parseInt(document.getElementById('modal-qty').value);
+    document.getElementById('modal-total').textContent = '$' + (modalPrice * qty);
+  }
+
+  function handlePurchase() {
+    closeModal();
+    const spots = document.getElementById('hero-spots');
+    let n = parseInt(spots.textContent);
+    if (n > 0) spots.textContent = n - 1;
+    showToast("You're in! 🎉", 'Check your email for your ticket.');
+  }
+
+  function handleSignup() {
+    const val = document.getElementById('email-input').value.trim();
+    if (!val || !val.includes('@')) {
+      document.getElementById('email-input').focus();
+      return;
+    }
+    document.getElementById('email-input').value = '';
+    showToast('You\'re on the list!', 'First dibs on the next event heading your way.');
+  }
+
+  function showToast(title, sub) {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-title').textContent = title;
+    document.getElementById('toast-sub').textContent = sub;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  // Topic Ideas
+  const seedIdeas = [
+    { text: "Is Hyderabad biryani actually overrated?", votes: 18, upvoted: false },
+    { text: "Are Telugu serials destroying family values?", votes: 12, upvoted: false },
+    { text: "Should India switch to a 4-day work week?", votes: 9, upvoted: false },
+  ];
+  let ideas = [...seedIdeas];
+
+  const ideaInput = document.getElementById('idea-input');
+  const charCount = document.getElementById('char-count');
+
+  ideaInput.addEventListener('input', () => {
+    charCount.textContent = ideaInput.value.length + ' / 120';
+  });
+
+  ideaInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') submitIdea();
+  });
+
+  function submitIdea() {
+    const val = ideaInput.value.trim();
+    if (!val) { ideaInput.focus(); return; }
+    ideas.unshift({ text: val, votes: 1, upvoted: true, isNew: true });
+    ideaInput.value = '';
+    charCount.textContent = '0 / 120';
+    renderIdeas();
+    showToast('Idea submitted! 🔥', 'Others can now vote for your topic.');
+  }
+
+  function upvoteIdea(i) {
+    if (ideas[i].upvoted) return;
+    ideas[i].votes++;
+    ideas[i].upvoted = true;
+    ideas.sort((a, b) => b.votes - a.votes);
+    renderIdeas();
+  }
+
+  function renderIdeas() {
+    const list = document.getElementById('ideas-list');
+    if (ideas.length === 0) {
+      list.innerHTML = '<div class="ideas-empty">No ideas yet — be the first to suggest a topic!</div>';
+      return;
+    }
+    list.innerHTML = ideas.map((idea, i) => `
+      <div class="idea-card">
+        <span class="idea-text">${idea.text}</span>
+        <div class="idea-right">
+          ${idea.isNew ? '<span class="idea-new-badge">New</span>' : ''}
+          <button class="idea-upvote ${idea.upvoted ? 'upvoted' : ''}" onclick="upvoteIdea(${i})">
+            ▲ ${idea.votes}
+          </button>
+        </div>
+      </div>`).join('');
+  }
+
+  renderIdeas();
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
