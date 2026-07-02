@@ -868,8 +868,15 @@
       document.getElementById('email-input').focus();
       return;
     }
-    document.getElementById('email-input').value = '';
-    showToast('You\'re on the list!', 'First dibs on the next event heading your way.');
+    emailjs.send("service_immjwtn", "template_ftn4nje", { email: val })
+      .then(() => {
+        document.getElementById('email-input').value = '';
+        showToast('You\'re on the list!', 'First dibs on the next event heading your way.');
+      })
+      .catch((err) => {
+        console.error('EmailJS error:', err);
+        showToast('Oops!', 'Something went wrong — try again in a bit.');
+      });
   }
 
   function showToast(title, sub) {
