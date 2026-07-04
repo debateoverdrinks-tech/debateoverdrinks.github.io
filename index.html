@@ -443,7 +443,29 @@
     padding: 2px 8px; border-radius: 99px;
   }
   .ideas-empty { font-size: 0.9rem; color: var(--muted); font-style: italic; padding: 1rem 0; }
-  .signup-section {
+  .faq-section { padding: 6rem 3rem; border-bottom: 2px solid var(--border); background: var(--bg); }
+  .faq-list { max-width: 700px; margin-top: 3.5rem; display: flex; flex-direction: column; gap: 12px; }
+  .faq-item {
+    background: var(--card-bg); border: 2px solid rgba(255,230,0,0.1);
+    border-radius: 8px; overflow: hidden; transition: border-color 0.2s;
+  }
+  .faq-item:hover { border-color: rgba(255,230,0,0.25); }
+  .faq-question {
+    width: 100%; text-align: left; background: none; border: none;
+    padding: 1.25rem 1.5rem; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 700;
+    color: var(--ink); display: flex; justify-content: space-between; align-items: center;
+    gap: 1rem;
+  }
+  .faq-question .faq-icon { color: var(--pink); font-size: 1.1rem; transition: transform 0.25s; flex-shrink: 0; }
+  .faq-item.open .faq-question .faq-icon { transform: rotate(45deg); }
+  .faq-answer {
+    max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0 1.5rem;
+  }
+  .faq-item.open .faq-answer { max-height: 300px; padding: 0 1.5rem 1.25rem; }
+  .faq-answer p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+ .signup-section {
     padding: 5rem 3rem; display: grid; grid-template-columns: 1fr 1fr;
     gap: 4rem; align-items: center; border-bottom: 2px solid var(--border);
     background: linear-gradient(135deg, #1A1040 0%, #12142A 100%);
