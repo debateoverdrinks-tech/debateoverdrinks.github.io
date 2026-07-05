@@ -801,7 +801,8 @@
     { label: "Are Telugu people obsessed with 'what will people say'?", votes: 29 },
     { label: "Which generation had it hardest — Gen Z vs Millennials?", votes: 33 }
   ];
-  let voted = false;
+  let voted = localStorage.getItem('dod_voted') === 'true';
+  window.votedIdx = parseInt(localStorage.getItem('dod_voted_idx'));
 
   function renderPoll() {
     const total = pollData.reduce((s, o) => s + o.votes, 0);
@@ -828,6 +829,8 @@
     pollData[i].votes++;
     voted = true;
     window.votedIdx = i;
+    localStorage.setItem('dod_voted', 'true');
+    localStorage.setItem('dod_voted_idx', i);
     renderPoll();
     showToast('Vote counted!', 'See you at the debate. 🥂');
   }
