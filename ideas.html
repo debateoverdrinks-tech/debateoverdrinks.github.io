@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Topics — Debate Over Drinks</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #12142A; --navy: #1A1D3B; --ink: #FFFFFF; --yellow: #FFE600;
+    --pink: #FF2D87; --teal: #00D4C8; --purple: #7B2FFF;
+    --muted: #8A90C0; --border: rgba(255,230,0,0.15); --card-bg: #1E2240;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; }
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 3rem; border-bottom: 2px solid var(--border);
+    position: sticky; top: 0; background: rgba(18,20,42,0.95);
+    backdrop-filter: blur(12px); z-index: 100;
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900;
+    color: var(--yellow); text-decoration: none;
+    text-shadow: 0 0 20px rgba(255,230,0,0.4);
+  }
+  .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+  .nav-links a { font-size: 0.875rem; color: var(--muted); text-decoration: none; font-weight: 500; }
+  .nav-links a:hover { color: var(--yellow); }
+  .page-section { padding: 6rem 3rem; max-width: 700px; margin: 0 auto; }
+  .section-header { display: flex; align-items: baseline; gap: 2rem; margin-bottom: 2.5rem; }
+  .section-num { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--teal); letter-spacing: 0.1em; }
+  .section-title {
+    font-family: 'Playfair Display', serif; font-size: clamp(2rem, 3vw, 2.75rem);
+    font-weight: 700; color: var(--yellow); letter-spacing: -0.03em;
+  }
+  .ideas-list { display: flex; flex-direction: column; gap: 10px; margin-top: 2rem; }
+  .idea-card {
+    background: var(--card-bg); border: 2px solid rgba(255,230,0,0.1);
+    border-radius: 6px; padding: 1rem 1.25rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  }
+  .idea-text { font-size: 0.9rem; color: var(--ink); flex: 1; line-height: 1.4; }
+  .idea-upvote {
+    display: flex; align-items: center; gap: 5px;
+    background: rgba(255,230,0,0.08); border: 1px solid rgba(255,230,0,0.2);
+    color: var(--yellow); font-size: 0.78rem; font-weight: 700;
+    padding: 5px 12px; border-radius: 99px; cursor: pointer;
+    transition: background 0.2s, transform 0.15s; font-family: 'DM Mono', monospace;
+  }
+  .idea-upvote:hover { background: rgba(255,230,0,0.18); transform: scale(1.05); }
+  .idea-upvote.upvoted { background: var(--yellow); color: #12142A; border-color: var(--yellow); }
+  .ideas-empty { font-size: 0.9rem; color: var(--muted); font-style: italic; padding: 1rem 0; }
+  footer {
+    padding: 2.5rem 3rem; display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 1rem;
+    background: var(--navy); border-top: 2px solid rgba(255,230,0,0.1);
+  }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 900; color: var(--yellow); }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; }
+  .footer-copy { font-size: 0.75rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Debate Over Drinks</a>
+  <div class="nav-links">
+    <a href="index.html#tickets">Tickets</a>
+    <a href="about.html">About Us</a>
+    <a href="faq.html">FAQ</a>
+    <a href="index.html#signup">Get Notified</a>
+  </div>
+</nav>
+
+<section class="page-section">
+  <div class="section-header">
+    <span class="section-num">TOPICS</span>
+    <h2 class="section-title">All suggested topics</h2>
+  </div>
+  <div class="ideas-list" id="ideas-list"></div>
+</section>
+
+<footer>
+  <div class="footer-logo">Debate Over Drinks</div>
+  <div class="footer-links">
+    <a href="https://www.instagram.com/debateoverdrinks/" target="_blank">Instagram</a>
+    <a href="mailto:debateoverdrinks@gmail.com">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 Debate Over Drinks</div>
+</footer>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, onValue, runTransaction }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAbsWt5QsB2BrWQOOnlmq0Jr8uuwgLXmzI",
+    authDomain: "debate-over-drinks.firebaseapp.com",
+    databaseURL: "https://debate-over-drinks-default-rtdb.firebaseio.com",
+    projectId: "debate-over-drinks",
+    storageBucket: "debate-over-drinks.firebasestorage.app",
+    messagingSenderId: "826304388695",
+    appId: "1:826304388695:web:a99818651f94254e980d12"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  function upvoteIdea(ideaId) {
+    if (localStorage.getItem('dod_upvoted_' + ideaId)) return;
+    localStorage.setItem('dod_upvoted_' + ideaId, 'true');
+    runTransaction(ref(db, 'ideas/' + ideaId + '/votes'), (current) => (current || 0) + 1);
+  }
+  window.upvoteIdea = upvoteIdea;
+
+  function renderAllIdeas(ideasObj) {
+    const list = document.getElementById('ideas-list');
+    if (!ideasObj) {
+      list.innerHTML = '<div class="ideas-empty">No ideas yet — be the first to suggest a topic!</div>';
+      return;
+    }
+    const ideasArr = Object.entries(ideasObj).map(([id, idea]) => ({ id, ...idea }));
+    ideasArr.sort((a, b) => b.votes - a.votes);
+
+    list.innerHTML = ideasArr.map(idea => {
+      const upvoted = localStorage.getItem('dod_upvoted_' + idea.id);
+      return `
+      <div class="idea-card">
+        <span class="idea-text">${idea.text}</span>
+        <button class="idea-upvote ${upvoted ? 'upvoted' : ''}" onclick="upvoteIdea('${idea.id}')">
+          ▲ ${idea.votes}
+        </button>
+      </div>`;
+    }).join('');
+  }
+
+  onValue(ref(db, 'ideas'), (snap) => {
+    renderAllIdeas(snap.val());
+  });
+</script>
+
+</body>
+</html>
