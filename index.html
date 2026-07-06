@@ -1011,6 +1011,15 @@
   onValue(ref(db, 'ideas'), (snap) => {
     renderTopIdeas(snap.val());
   });
+   onValue(ref(db, 'signupCount'), (snap) => {
+    const count = snap.val() != null ? snap.val() : 340;
+    const el = document.getElementById('signup-count');
+    if (el) el.textContent = count;
+  });
+
+  window.incrementSignupCount = function() {
+    runTransaction(ref(db, 'signupCount'), (current) => (current != null ? current : 340) + 1);
+  };
    window.castVote = castVote;
 </script>
 
