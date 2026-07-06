@@ -557,6 +557,24 @@
   }
   .modal-pay:hover { background: var(--purple); }
   .modal-secure { font-size: 0.72rem; color: var(--muted); text-align: center; margin-top: 0.5rem; }
+ .modal-terms-box {
+  max-height: 120px; overflow-y: auto; padding: 0.75rem;
+  background: var(--card-bg); border: 2px solid rgba(255,230,0,0.15);
+  border-radius: 6px; font-size: 0.75rem; color: var(--muted); line-height: 1.5;
+}
+.modal-terms-box p { margin-bottom: 0.6rem; }
+.modal-terms-box p:last-child { margin-bottom: 0; }
+.modal-terms-box strong { color: var(--ink); }
+.modal-terms-check {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 0.78rem; color: var(--muted); line-height: 1.4;
+}
+.modal-terms-check input[type="checkbox"] {
+  margin-top: 2px; width: 16px; height: 16px; flex-shrink: 0; cursor: pointer;
+  accent-color: var(--pink);
+}
+.modal-pay:disabled { opacity: 0.5; cursor: not-allowed; }
+.modal-pay:disabled:hover { background: var(--pink); }
   .toast {
     position: fixed; bottom: 2rem; right: 2rem;
     background: var(--navy); border: 2px solid var(--yellow);
@@ -836,7 +854,20 @@
         <span>Total due today</span>
         <strong id="modal-total">$15</strong>
       </div>
-      <button class="modal-pay" onclick="handlePurchase()">Complete purchase →</button>
+
+      <div class="modal-terms-box">
+        <p><strong>Right of Refusal & Removal:</strong> We reserve the right to refuse entry or remove anyone who is excessively intoxicated or behaving in a way that risks other attendees' safety, without refund.</p>
+        <p><strong>Refund Policy:</strong> Tickets are non-refundable except if Debate Over Drinks cancels or postpones the event, in which case you'll be offered a full refund or credit toward a future event.</p>
+        <p><strong>Code of Conduct:</strong> Zero tolerance for harassment, hate speech, or violence. Violators may be removed without refund and barred from future events.</p>
+        <p><strong>Photography:</strong> By attending, you consent to being photographed or filmed for promotional use.</p>
+      </div>
+
+      <label class="modal-terms-check">
+        <input type="checkbox" id="terms-checkbox" onchange="togglePayButton()">
+        <span>I have read and agree to the terms above.</span>
+      </label>
+
+      <button class="modal-pay" id="modal-pay-btn" onclick="handlePurchase()" disabled>Complete purchase →</button>
       <div class="modal-secure">🔒 Secure checkout · Instant confirmation by email</div>
     </div>
   </div>
@@ -1031,12 +1062,19 @@
     document.getElementById('modal-tier').textContent = tier + ' Ticket';
     document.getElementById('modal-title').textContent = tier === 'VIP Table' ? 'Reserve your table' : 'Reserve your spot';
     document.getElementById('modal-qty').value = '1';
+    document.getElementById('terms-checkbox').checked = false;
+    document.getElementById('modal-pay-btn').disabled = true;
     updateTotal();
     document.getElementById('modal').classList.add('open');
   }
 
   function closeModal() {
     document.getElementById('modal').classList.remove('open');
+  }
+ function togglePayButton() {
+    const checkbox = document.getElementById('terms-checkbox');
+    const payBtn = document.getElementById('modal-pay-btn');
+    payBtn.disabled = !checkbox.checked;
   }
 
   function closeModalOutside(e) {
