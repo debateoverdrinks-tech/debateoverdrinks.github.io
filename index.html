@@ -454,6 +454,14 @@
     padding: 2px 8px; border-radius: 99px;
   }
   .ideas-empty { font-size: 0.9rem; color: var(--muted); font-style: italic; padding: 1rem 0; }
+ .ideas-see-more {
+  margin-top: 12px; padding: 0.7rem 1.5rem; background: transparent;
+  border: 2px solid rgba(255,230,0,0.25); color: var(--yellow);
+  font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
+  border-radius: 6px; transition: all 0.2s; display: inline-block;
+}
+.ideas-see-more:hover { background: rgba(255,230,0,0.1); border-color: var(--yellow); }
  .signup-section {
     padding: 5rem 3rem; display: grid; grid-template-columns: 1fr 1fr;
     gap: 4rem; align-items: center; border-bottom: 2px solid var(--border);
@@ -1037,13 +1045,16 @@
     renderIdeas();
   }
 
+  let showAllIdeas = false;
+
   function renderIdeas() {
     const list = document.getElementById('ideas-list');
     if (ideas.length === 0) {
       list.innerHTML = '<div class="ideas-empty">No ideas yet — be the first to suggest a topic!</div>';
       return;
     }
-    list.innerHTML = ideas.map((idea, i) => `
+    const visibleIdeas = showAllIdeas ? ideas : ideas.slice(0, 3);
+    let html = visibleIdeas.map((idea, i) => `
       <div class="idea-card">
         <span class="idea-text">${idea.text}</span>
         <div class="idea-right">
@@ -1053,6 +1064,18 @@
           </button>
         </div>
       </div>`).join('');
+
+    if (ideas.length > 3) {
+      html += `<button class="ideas-see-more" onclick="toggleShowAllIdeas()">
+        ${showAllIdeas ? 'Show less' : 'See more topics (' + (ideas.length - 3) + ')'}
+      </button>`;
+    }
+    list.innerHTML = html;
+  }
+
+  function toggleShowAllIdeas() {
+    showAllIdeas = !showAllIdeas;
+    renderIdeas();
   }
 
   renderIdeas();
