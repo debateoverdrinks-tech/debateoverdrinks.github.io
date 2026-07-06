@@ -700,28 +700,52 @@
     <h2 class="section-title">Battle history</h2>
   </div>
   <div class="debates-list">
-    <div class="debate-row">
+    <div class="debate-row" style="grid-template-columns: 80px 1fr auto auto; align-items: start;">
       <div class="debate-date">Jun '25</div>
-      <div class="debate-topic">Are TFI fans obsessed with "mass elevations"?</div>
-      <div class="debate-winner"><strong>Team Yes</strong>won 67%</div>
+      <div>
+        <div class="debate-topic">Are TFI fans obsessed with "mass elevations"?</div>
+        <div class="battle-vote-row">
+          <button class="battle-vote-btn" data-debate="0" data-side="yes" onclick="castBattleVote(0,'yes')">YES <span id="battle-0-yes-pct"></span></button>
+          <button class="battle-vote-btn" data-debate="0" data-side="no" onclick="castBattleVote(0,'no')">NO <span id="battle-0-no-pct"></span></button>
+        </div>
+      </div>
+      <div class="debate-winner" id="battle-0-winner"><strong>Team Yes</strong>won 67%</div>
       <div class="debate-attendance">84 attended</div>
     </div>
-    <div class="debate-row">
+    <div class="debate-row" style="grid-template-columns: 80px 1fr auto auto; align-items: start;">
       <div class="debate-date">May '25</div>
-      <div class="debate-topic">Are influencers the new celebrities?</div>
-      <div class="debate-winner"><strong>Team Yes</strong>won 71%</div>
+      <div>
+        <div class="debate-topic">Are influencers the new celebrities?</div>
+        <div class="battle-vote-row">
+          <button class="battle-vote-btn" data-debate="1" data-side="yes" onclick="castBattleVote(1,'yes')">YES <span id="battle-1-yes-pct"></span></button>
+          <button class="battle-vote-btn" data-debate="1" data-side="no" onclick="castBattleVote(1,'no')">NO <span id="battle-1-no-pct"></span></button>
+        </div>
+      </div>
+      <div class="debate-winner" id="battle-1-winner"><strong>Team Yes</strong>won 71%</div>
       <div class="debate-attendance">91 attended</div>
     </div>
-    <div class="debate-row">
+    <div class="debate-row" style="grid-template-columns: 80px 1fr auto auto; align-items: start;">
       <div class="debate-date">Apr '25</div>
-      <div class="debate-topic">Did dating apps make relationships disposable?</div>
-      <div class="debate-winner"><strong>Team Yes</strong>won 58%</div>
+      <div>
+        <div class="debate-topic">Did dating apps make relationships disposable?</div>
+        <div class="battle-vote-row">
+          <button class="battle-vote-btn" data-debate="2" data-side="yes" onclick="castBattleVote(2,'yes')">YES <span id="battle-2-yes-pct"></span></button>
+          <button class="battle-vote-btn" data-debate="2" data-side="no" onclick="castBattleVote(2,'no')">NO <span id="battle-2-no-pct"></span></button>
+        </div>
+      </div>
+      <div class="debate-winner" id="battle-2-winner"><strong>Team Yes</strong>won 58%</div>
       <div class="debate-attendance">76 attended</div>
     </div>
-    <div class="debate-row">
+    <div class="debate-row" style="grid-template-columns: 80px 1fr auto auto; align-items: start;">
       <div class="debate-date">Mar '25</div>
-      <div class="debate-topic">Is community judgment worse abroad than in India?</div>
-      <div class="debate-winner"><strong>Team Abroad</strong>won 54%</div>
+      <div>
+        <div class="debate-topic">Is community judgment worse abroad than in India?</div>
+        <div class="battle-vote-row">
+          <button class="battle-vote-btn" data-debate="3" data-side="abroad" onclick="castBattleVote(3,'abroad')">ABROAD <span id="battle-3-abroad-pct"></span></button>
+          <button class="battle-vote-btn" data-debate="3" data-side="india" onclick="castBattleVote(3,'india')">INDIA <span id="battle-3-india-pct"></span></button>
+        </div>
+      </div>
+      <div class="debate-winner" id="battle-3-winner"><strong>Team Abroad</strong>won 54%</div>
       <div class="debate-attendance">88 attended</div>
     </div>
   </div>
