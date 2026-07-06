@@ -1012,7 +1012,7 @@
     renderTopIdeas(snap.val());
   });
    onValue(ref(db, 'signupCount'), (snap) => {
-    const count = snap.val() != null ? snap.val() : 340;
+    const count = snap.val() != null ? snap.val() : 50;
     const el = document.getElementById('signup-count');
     if (el) el.textContent = count;
   });
