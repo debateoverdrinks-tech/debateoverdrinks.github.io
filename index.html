@@ -1018,76 +1018,14 @@
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3500);
   }
-  const seedIdeas = [
-    { text: "Is Hyderabad biryani actually overrated?", votes: 18, upvoted: false },
-    { text: "Are Telugu serials destroying family values?", votes: 12, upvoted: false },
-    { text: "Should India switch to a 4-day work week?", votes: 9, upvoted: false },
-  ];
-  let ideas = [...seedIdeas];
-
   const ideaInput = document.getElementById('idea-input');
   const charCount = document.getElementById('char-count');
-
   ideaInput.addEventListener('input', () => {
     charCount.textContent = ideaInput.value.length + ' / 120';
   });
-
   ideaInput.addEventListener('keydown', e => {
     if (e.key === 'Enter') submitIdea();
   });
-
-  function submitIdea() {
-    const val = ideaInput.value.trim();
-    if (!val) { ideaInput.focus(); return; }
-    ideas.unshift({ text: val, votes: 1, upvoted: true, isNew: true });
-    ideaInput.value = '';
-    charCount.textContent = '0 / 120';
-    renderIdeas();
-    showToast('Idea submitted! 🔥', 'Others can now vote for your topic.');
-  }
-
-  function upvoteIdea(i) {
-    if (ideas[i].upvoted) return;
-    ideas[i].votes++;
-    ideas[i].upvoted = true;
-    ideas.sort((a, b) => b.votes - a.votes);
-    renderIdeas();
-  }
-
-  let showAllIdeas = false;
-
-  function renderIdeas() {
-    const list = document.getElementById('ideas-list');
-    if (ideas.length === 0) {
-      list.innerHTML = '<div class="ideas-empty">No ideas yet — be the first to suggest a topic!</div>';
-      return;
-    }
-    const visibleIdeas = showAllIdeas ? ideas : ideas.slice(0, 3);
-    let html = visibleIdeas.map((idea, i) => `
-      <div class="idea-card">
-        <span class="idea-text">${idea.text}</span>
-        <div class="idea-right">
-          ${idea.isNew ? '<span class="idea-new-badge">New</span>' : ''}
-          <button class="idea-upvote ${idea.upvoted ? 'upvoted' : ''}" onclick="upvoteIdea(${i})">
-            ▲ ${idea.votes}
-          </button>
-        </div>
-      </div>`).join('');
-
-    if (ideas.length > 3) {
-      html += `<button class="ideas-see-more" onclick="toggleShowAllIdeas()">
-        ${showAllIdeas ? 'Show less' : 'See more topics (' + (ideas.length - 3) + ')'}
-      </button>`;
-    }
-    list.innerHTML = html;
-  }
-
-  function toggleShowAllIdeas() {
-    showAllIdeas = !showAllIdeas;
-    renderIdeas();
-  }
-
-  renderIdeas();
 
   function toggleFaq(btn) {
     const item = btn.closest('.faq-item');
