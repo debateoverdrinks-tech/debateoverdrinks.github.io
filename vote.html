@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vote Counter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 60px;
+    }
+    button {
+      font-size: 18px;
+      padding: 12px 24px;
+      margin: 10px;
+      cursor: pointer;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    p {
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Vote for your favorite!</h1>
+  <button onclick="vote('optionA')">Option A</button>
+  <button onclick="vote('optionB')">Option B</button>
+
+  <p>Option A votes: <span id="countA">0</span></p>
+  <p>Option B votes: <span id="countB">0</span></p>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, onValue, runTransaction }
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAbsWt5QsB2BrWQOOnlmq0Jr8uuwgLXmzI",
+      authDomain: "debate-over-drinks.firebaseapp.com",
+      databaseURL: "https://debate-over-drinks-default-rtdb
