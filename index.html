@@ -896,7 +896,52 @@
     });
   });
 
-  window.castVote = castVote;
+ const battleConfig = [
+    { sides: ['yes', 'no'], seed: { yes: 67, no: 33 } },
+    { sides: ['yes', 'no'], seed: { yes: 71, no: 29 } },
+    { sides: ['yes', 'no'], seed: { yes: 58, no: 42 } },
+    { sides: ['abroad', 'india'], seed: { abroad: 54, india: 46 } }
+  ];
+
+  function renderBattle(debateIdx, votes) {
+    const cfg = battleConfig[debateIdx];
+    const total = cfg.sides.reduce((s, side) => s + votes[side], 0);
+    cfg.sides.forEach(side => {
+      const pct = total > 0 ? Math.round((votes[side] / total) * 100) : 0;
+      const el = document.getElementById('battle-' + debateIdx + '-' + side + '-pct');
+      if (el) el.textContent = pct + '%';
+    });
+    const winnerSide = cfg.sides.reduce((a, b) => votes[a] >= votes[b] ? a : b);
+    const winnerPct = total > 0 ? Math.round((votes[winnerSide] / total) * 100) : 0;
+    const winnerLabel = winnerSide.charAt(0).toUpperCase() + winnerSide.slice(1);
+    const winnerEl = document.getElementById('battle-' + debateIdx + '-winner');
+    if (winnerEl) winnerEl.innerHTML = '<strong>Team ' + winnerLabel + '</strong>won ' + winnerPct + '%';
+
+    const votedSide = localStorage.getItem('dod_battle_voted_' + debateIdx);
+    document.querySelectorAll('[data-debate="' + debateIdx + '"]').forEach(btn => {
+      btn.classList.toggle('selected', btn.dataset.side === votedSide);
+      if (votedSide) btn.disabled = true;
+    });
+  }
+
+  window.castBattleVote = function(debateIdx, side) {
+    if (localStorage.getItem('dod_battle_voted_' + debateIdx)) return;
+    localStorage.setItem('dod_battle_voted_' + debateIdx, side);
+    runTransaction(ref(db, 'battleVotes/' + debateIdx + '/' + side), (current) => (current || 0) + 1);
+  };
+
+  battleConfig.forEach((cfg, debateIdx) => {
+    const votes = {};
+    cfg.sides.forEach(side => {
+      onValue(ref(db, 'battleVotes/' + debateIdx + '/' + side), (snap) => {
+        votes[side] = snap.val() != null ? snap.val() : cfg.seed[side];
+        if (cfg.sides.every(s => votes[s] != null)) {
+          renderBattle(debateIdx, votes);
+        }
+      });
+    });
+  });
+   window.castVote = castVote;
 </script>
 
 <script>
