@@ -958,6 +958,59 @@
       });
     });
   });
+   const ideaInputEl = document.getElementById('idea-input');
+  const charCountEl = document.getElementById('char-count');
+
+  function submitIdea() {
+    const val = ideaInputEl.value.trim();
+    if (!val) { ideaInputEl.focus(); return; }
+    const newIdeaRef = push(ref(db, 'ideas'));
+    set(newIdeaRef, { text: val, votes: 1, createdAt: Date.now() });
+    ideaInputEl.value = '';
+    charCountEl.textContent = '0 / 120';
+    if (window.showToast) window.showToast('Idea submitted! 🔥', 'Others can now vote for your topic.');
+  }
+  window.submitIdea = submitIdea;
+
+  function upvoteIdea(ideaId) {
+    if (localStorage.getItem('dod_upvoted_' + ideaId)) return;
+    localStorage.setItem('dod_upvoted_' + ideaId, 'true');
+    runTransaction(ref(db, 'ideas/' + ideaId + '/votes'), (current) => (current || 0) + 1);
+  }
+  window.upvoteIdea = upvoteIdea;
+
+  function renderTopIdeas(ideasObj) {
+    const list = document.getElementById('ideas-list');
+    if (!ideasObj) {
+      list.innerHTML = '<div class="ideas-empty">No ideas yet — be the first to suggest a topic!</div>';
+      return;
+    }
+    const ideasArr = Object.entries(ideasObj).map(([id, idea]) => ({ id, ...idea }));
+    ideasArr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    const top3 = ideasArr.slice(0, 3);
+
+    let html = top3.map(idea => {
+      const upvoted = localStorage.getItem('dod_upvoted_' + idea.id);
+      return `
+      <div class="idea-card">
+        <span class="idea-text">${idea.text}</span>
+        <div class="idea-right">
+          <button class="idea-upvote ${upvoted ? 'upvoted' : ''}" onclick="upvoteIdea('${idea.id}')">
+            ▲ ${idea.votes}
+          </button>
+        </div>
+      </div>`;
+    }).join('');
+
+    if (ideasArr.length > 3) {
+      html += `<a href="ideas.html" class="ideas-see-more">See more topics (${ideasArr.length - 3})</a>`;
+    }
+    list.innerHTML = html;
+  }
+
+  onValue(ref(db, 'ideas'), (snap) => {
+    renderTopIdeas(snap.val());
+  });
    window.castVote = castVote;
 </script>
 
