@@ -395,6 +395,16 @@
   .debate-winner { font-size: 0.75rem; color: var(--muted); text-align: right; }
   .debate-winner strong { color: var(--pink); display: block; font-size: 0.8rem; }
   .debate-attendance { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--muted); text-align: right; white-space: nowrap; }
+ .battle-vote-row { display: flex; gap: 8px; margin-top: 8px; }
+.battle-vote-btn {
+  flex: 1; padding: 6px 10px; font-size: 0.7rem; font-weight: 700;
+  border: 2px solid rgba(255,230,0,0.2); background: var(--card-bg); color: var(--muted);
+  border-radius: 4px; cursor: pointer; transition: all 0.2s;
+  font-family: 'DM Mono', monospace; letter-spacing: 0.05em;
+}
+.battle-vote-btn:hover { border-color: var(--pink); color: var(--ink); }
+.battle-vote-btn.selected { background: var(--pink); border-color: var(--pink); color: #fff; }
+.battle-vote-btn:disabled { cursor: default; }
   .ideas-section { padding: 6rem 3rem; border-bottom: 2px solid var(--border); background: var(--navy); }
   .ideas-section .section-title { color: var(--yellow); }
   .ideas-section .section-num { color: var(--teal); }
