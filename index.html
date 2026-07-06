@@ -795,27 +795,47 @@
   <div class="toast-sub" id="toast-sub">Check your email for confirmation.</div>
 </div>
 <script>
-  const pollData = [
-    { label: "Which IPL team is the most overrated?", votes: 41 },
-    { label: "Is pan-India success ruining original Telugu storytelling?", votes: 37 },
-    { label: "Are Telugu people obsessed with 'what will people say'?", votes: 29 },
-    { label: "Which generation had it hardest — Gen Z vs Millennials?", votes: 33 }
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, onValue, runTransaction }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAbsWt5QsB2BrWQOOnlmq0Jr8uuwgLXmzI",
+    authDomain: "debate-over-drinks.firebaseapp.com",
+    databaseURL: "https://debate-over-drinks-default-rtdb.firebaseio.com",
+    projectId: "debate-over-drinks",
+    storageBucket: "debate-over-drinks.firebasestorage.app",
+    messagingSenderId: "826304388695",
+    appId: "1:826304388695:web:a99818651f94254e980d12"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  const pollLabels = [
+    "Which IPL team is the most overrated?",
+    "Is pan-India success ruining original Telugu storytelling?",
+    "Are Telugu people obsessed with 'what will people say'?",
+    "Which generation had it hardest — Gen Z vs Millennials?"
   ];
+
+  let currentVotes = [0, 0, 0, 0];
   let voted = localStorage.getItem('dod_voted') === 'true';
-  window.votedIdx = parseInt(localStorage.getItem('dod_voted_idx'));
+  let votedIdx = parseInt(localStorage.getItem('dod_voted_idx'));
 
   function renderPoll() {
-    const total = pollData.reduce((s, o) => s + o.votes, 0);
+    const total = currentVotes.reduce((s, v) => s + v, 0);
     const container = document.getElementById('poll-options');
     container.innerHTML = '';
-    pollData.forEach((o, i) => {
-      const pct = Math.round((o.votes / total) * 100);
+    pollLabels.forEach((label, i) => {
+      const pct = total > 0 ? Math.round((currentVotes[i] / total) * 100) : 0;
       const div = document.createElement('div');
-      div.className = 'poll-option' + (voted && i === window.votedIdx ? ' voted-for' : '');
+      div.className = 'poll-option' + (voted && i === votedIdx ? ' voted-for' : '');
       div.innerHTML = `
         <div class="poll-bar" style="width:${voted ? pct : 0}%;"></div>
         <div class="poll-option-inner">
-          <span class="poll-opt-label">${o.label}</span>
+          <span class="poll-opt-label">${label}</span>
           <span class="poll-opt-pct ${voted ? 'visible' : ''}">${pct}%</span>
         </div>`;
       if (!voted) div.onclick = () => castVote(i);
@@ -826,16 +846,23 @@
 
   function castVote(i) {
     if (voted) return;
-    pollData[i].votes++;
     voted = true;
-    window.votedIdx = i;
+    votedIdx = i;
     localStorage.setItem('dod_voted', 'true');
     localStorage.setItem('dod_voted_idx', i);
-    renderPoll();
-    showToast('Vote counted!', 'See you at the debate. 🥂');
+    runTransaction(ref(db, 'poll/votes/' + i), (current) => (current || 0) + 1);
+    if (window.showToast) window.showToast('Vote counted!', 'See you at the debate. 🥂');
   }
 
-  renderPoll();
+  pollLabels.forEach((_, i) => {
+    onValue(ref(db, 'poll/votes/' + i), (snap) => {
+      currentVotes[i] = snap.val() || 0;
+      renderPoll();
+    });
+  });
+
+  window.castVote = castVote;
+</script>
 
   let modalPrice = 15;
 
