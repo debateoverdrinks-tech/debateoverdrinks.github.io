@@ -1053,7 +1053,7 @@
     const spots = document.getElementById('hero-spots');
     let n = parseInt(spots.textContent);
     if (n > 0) spots.textContent = n - 1;
-    showToast("You're in! 🎉", 'Check your email for your ticket.');
+    showToast("You're in for the war! 🎉", 'Check your email for your ticket.');
   }
 
   function handleSignup() {
@@ -1065,6 +1065,7 @@
     emailjs.send("service_byfwlhd", "template_ftn4nje", { email: val })
       .then(() => {
         document.getElementById('email-input').value = '';
+        if (window.incrementSignupCount) window.incrementSignupCount();
         showToast('You\'re on the list!', 'First dibs on the next event heading your way.');
       })
       .catch((err) => {
